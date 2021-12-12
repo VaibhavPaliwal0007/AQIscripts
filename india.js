@@ -19,7 +19,6 @@ const uniqueCities = new Set();
       let data = JSON.parse(body);
 
       if (data.records.length === 0) {
-        console.log(mainData);
         process.exit();
       }
 
@@ -42,51 +41,51 @@ const uniqueCities = new Set();
         let pollutant_max = data.records[i].pollutant_max;
         let pollutant_min = data.records[i].pollutant_min;
 
-        if(pollutant_avg != "NA" || pollutant_max != "NA" || pollutant_min != "NA") {
+        if(pollutant_avg == "NA" || pollutant_max == "NA" || pollutant_min == "NA") {
                 continue;
         }
 
         switch (pollutant_id) {
           case "PM2.5":
-            mainData.pm25 = pollutant_avg != "NA" ? pollutant_avg : Math.random(200, 400);
-            mainData.pm25min = pollutant_min != "NA" ? pollutant_min : Math.random(200, 400);
-            mainData.pm25max = pollutant_max != "NA" ? pollutant_max : Math.random(200, 400);
+            mainData.pm25 = pollutant_avg;;
+            mainData.pm25min = pollutant_min;
+            mainData.pm25max = pollutant_max;
             break;
 
           case "PM10":
-            mainData.pm10 = pollutant_avg != "NA" ? pollutant_avg : Math.random(200, 400);
-            mainData.pm10min = pollutant_min != "NA" ? pollutant_min : Math.random(200, 400);
-            mainData.pm10max = pollutant_max != "NA" ? pollutant_max : Math.random(200, 400);
+            mainData.pm10 = pollutant_avg;
+            mainData.pm10min = pollutant_min;
+            mainData.pm10max = pollutant_max;
             break;
 
           case "OZONE":
-            mainData.o3 = pollutant_avg != "NA" ? pollutant_avg : Math.random(5, 10);
-            mainData.o3min = pollutant_min != "NA" ? pollutant_min : Math.random(5, 10);
-            mainData.o3max = pollutant_max != "NA" ? pollutant_max : Math.random(5, 10);
+            mainData.o3 = pollutant_avg;
+            mainData.o3min = pollutant_min;
+            mainData.o3max = pollutant_max;
             break;
 
           case "NO2":
-            mainData.no2 = pollutant_avg != "NA" ? pollutant_avg : Math.random(5, 10);
-            mainData.no2min = pollutant_min != "NA" ? pollutant_min : Math.random(5, 10);
-            mainData.no2max = pollutant_max != "NA" ? pollutant_max : Math.random(5, 10);
+            mainData.no2 = pollutant_avg;
+            mainData.no2min = pollutant_min;
+            mainData.no2max = pollutant_max;
             break;
 
           case "CO":
-            mainData.co = pollutant_avg != "NA" ? pollutant_avg : Math.random(5, 10);
-            mainData.comin = pollutant_min != "NA" ? pollutant_min : Math.random(5, 10);
-            mainData.comax = pollutant_max != "NA" ? pollutant_max : Math.random(5, 10);
+            mainData.co = pollutant_avg;
+            mainData.comin = pollutant_min;
+            mainData.comax = pollutant_max;
             break;
 
           case "SO2":
-            mainData.so2 = pollutant_avg != "NA" ? pollutant_avg : Math.random(5, 10);
-            mainData.so2min = pollutant_min != "NA" ? pollutant_min : Math.random(5, 10);
-            mainData.so2max = pollutant_max != "NA" ? pollutant_max : Math.random(5, 10);
+            mainData.so2 = pollutant_avg;
+            mainData.so2min = pollutant_min;
+            mainData.so2max = pollutant_max;
             break;
 
           case "NH3":
-            mainData.nh3 = pollutant_avg != "NA" ? pollutant_avg : Math.random(5, 10);
-            mainData.nh3min = pollutant_min != "NA" ? pollutant_min : Math.random(5, 10);
-            mainData.nh3max = pollutant_max != "NA" ? pollutant_max : Math.random(5, 10);
+            mainData.nh3 = pollutant_avg;
+            mainData.nh3min = pollutant_min;
+            mainData.nh3max = pollutant_max;
             break;
 
           default:
@@ -98,15 +97,14 @@ const uniqueCities = new Set();
             try{
                 ifElse(mainData); //aqi calculation
                 
-                // const aqi = new AQI(mainData);
-        
-               
+                const aqi = new AQI(mainData);
+
                 console.log(++j);
-                // await aqi.save();
-                fs.appendFile('data.json', JSON.stringify(mainData), function (err) {
-                  if(err) throw err;
-                  console.log('Saved!');
-                });
+                await aqi.save();
+                // fs.appendFile('data.json', JSON.stringify(mainData), function (err) {
+                //   if(err) throw err;
+                //   console.log('Saved!');
+                // });
 
                 mainData = {};
                 
