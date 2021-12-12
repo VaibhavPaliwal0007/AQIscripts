@@ -1,7 +1,7 @@
 const request = require('request');
-const AQI = require('./pollutionmodel')
-const loopFunc = require('./rohiniloop')
-const ifElse = require('./ifelse')
+const AQI = require('./pollutantsModel')
+const loopFunc = require('./populatingDocument')
+const ifElse = require('./calculateAQI')
 require('./db')
 
 let options = {

@@ -1,7 +1,7 @@
-const checkUnderscores = require('./checkunderscores');
+const checkUnderscores = require('./modifyStatenames');
 const request = require("request");
-const ifElse = require('./ifelse')
-const AQI = require("./pollutionmodel");
+const ifElse = require('./calculateAQI')
+const AQI = require("./pollutantsModel");
 const fs = require('fs');
 
 require('./db')
@@ -19,7 +19,7 @@ const uniqueCities = new Set();
       let data = JSON.parse(body);
 
       if (data.records.length === 0) {
-        process.exit();
+          process.exit();
       }
 
       for (let i = 0; i < data.records.length; i++) {
