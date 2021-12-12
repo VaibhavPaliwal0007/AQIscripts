@@ -2,6 +2,8 @@ const checkUnderscores = require('./checkunderscores');
 const request = require("request");
 const ifElse = require('./ifelse')
 const AQI = require("./pollutionmodel");
+const fs = require('fs');
+
 require('./db')
 
 let mainData = {};
@@ -17,7 +19,6 @@ const uniqueCities = new Set();
       let data = JSON.parse(body);
 
       if (data.records.length === 0) {
-        // fs.writeFileSync('data.json', JSON.stringify(mainData));
         console.log(mainData);
         process.exit();
       }
@@ -77,15 +78,15 @@ const uniqueCities = new Set();
             break;
 
           case "SO2":
-            mainData.so2 = pollutant_avg;
-            mainData.so2min = pollutant_min;
-            mainData.so2max = pollutant_max;
+            mainData.so2 = pollutant_avg != "NA" ? pollutant_avg : Math.random(5, 10);
+            mainData.so2min = pollutant_min != "NA" ? pollutant_min : Math.random(5, 10);
+            mainData.so2max = pollutant_max != "NA" ? pollutant_max : Math.random(5, 10);
             break;
 
           case "NH3":
-            mainData.nh3 = pollutant_avg;
-            mainData.nh3min = pollutant_min;
-            mainData.nh3max = pollutant_max;
+            mainData.nh3 = pollutant_avg != "NA" ? pollutant_avg : Math.random(5, 10);
+            mainData.nh3min = pollutant_min != "NA" ? pollutant_min : Math.random(5, 10);
+            mainData.nh3max = pollutant_max != "NA" ? pollutant_max : Math.random(5, 10);
             break;
 
           default:
@@ -97,11 +98,17 @@ const uniqueCities = new Set();
             try{
                 ifElse(mainData); //aqi calculation
                 
-                const aqi = new AQI(mainData);
+                // const aqi = new AQI(mainData);
         
-               mainData = {};
+               
                 console.log(++j);
-                await aqi.save();
+                // await aqi.save();
+                fs.appendFile('data.json', JSON.stringify(mainData), function (err) {
+                  if(err) throw err;
+                  console.log('Saved!');
+                });
+
+                mainData = {};
                 
             }
             catch(e){
